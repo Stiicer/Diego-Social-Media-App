@@ -49,15 +49,43 @@ deleteThought(req, res) {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })
-          : User.deleteMany({ _id: { $in: thought.user } })
+          : User.deleteMany({ _id: { $in: thought.username } })
       )
-      .then(() => res.json({ message: 'Thought deleted!' }))
+      .then(() => res.json({ message: 'Thought and User deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
-  addReaction(req, res){
-    Reaction
-
-
-  }
+  //adds reaction to thought
+  addReaction(req, res) {
+    console.log('Comment your reaction to the thought');
+    console.log(req.body);
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
+      { runValidators: true, new: true }
+    )
+      .then((thought) =>
+        !thought
+          ? res
+              .status(404)
+              .json({ message: 'No thoughts found' })
+          : res.json(thought)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+  deleteReaction(req, res){
+   Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reaction: { reactionId: req.params.reactionId } } },
+      { runValidators: true, new: true }
+    )
+      .then((thought) =>
+        !thought
+          ? res
+              .status(404)
+              .json({ message: 'No thoughts found' })
+          : res.json(student)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
 };
 
