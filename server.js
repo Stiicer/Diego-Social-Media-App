@@ -10,6 +10,6 @@ app.use(routes);
 
 db.once('open', () => {
     app.listen(PORT, () => {
-      console.log(` ${activity} running on ${PORT}!`);
+      console.log(`running on ${PORT}!`);
     });
   });
