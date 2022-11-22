@@ -72,7 +72,8 @@ deleteThought(req, res) {
       )
       .catch((err) => res.status(500).json(err));
   },
-  deleteReaction(req, res){
+    //deletes a reaction
+  removeReaction(req, res){
    Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $pull: { reaction: { reactionId: req.params.reactionId } } },
